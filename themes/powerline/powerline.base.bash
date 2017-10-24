@@ -139,7 +139,7 @@ function __powerline_left_segment {
 }
 
 function __powerline_last_status_prompt {
-  [[ "$1" -ne 0 ]] && echo "${1}|${LAST_STATUS_THEME_PROMPT_COLOR}"
+  [[ "$1" -ne 0 ]] && echo "${1}|${LAST_STATUS_THEME_PROMPT_COLOR}|255"
 }
 
 function __powerline_prompt_command {
