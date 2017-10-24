@@ -26,7 +26,7 @@ function __powerline_user_info_prompt {
   case "${POWERLINE_PROMPT_USER_INFO_MODE}" in
     "sudo")
       if [[ "${color}" == "${USER_INFO_THEME_PROMPT_COLOR_SUDO}" ]]; then
-        user_info="!"
+        user_info="!!!"
       fi
       ;;
     *)
@@ -37,7 +37,7 @@ function __powerline_user_info_prompt {
       fi
       ;;
   esac
-  [[ -n "${user_info}" ]] && echo "${user_info}|${color}"
+  [[ -n "${user_info}" ]] && echo "${user_info}|${color}|255"
 }
 
 function __powerline_ruby_prompt {
@@ -90,7 +90,7 @@ function __powerline_scm_prompt {
 }
 
 function __powerline_cwd_prompt {
-  echo "$(pwd | sed "s|^${HOME}|~|")|${CWD_THEME_PROMPT_COLOR}"
+  echo "$(pwd | sed "s|^${HOME}|~|")|${CWD_THEME_PROMPT_COLOR}|256"
 }
 
 function __powerline_clock_prompt {
@@ -111,8 +111,8 @@ function __powerline_battery_prompt {
     else
       color="${BATTERY_STATUS_THEME_PROMPT_GOOD_COLOR}"
     fi
-    ac_adapter_connected && battery_status="${BATTERY_AC_CHAR}${battery_status}"
-    echo "${battery_status}%|${color}"
+    ac_adapter_connected && battery_status="${BATTERY_AC_CHAR} ${battery_status}"
+    echo "${battery_status}%|${color}|253"
   fi
 }
 
@@ -132,7 +132,7 @@ function __powerline_left_segment {
   if [[ "${SEGMENTS_AT_LEFT}" -gt 0 ]]; then
     separator="$(set_color ${LAST_SEGMENT_COLOR} ${params[1]})${separator_char}${normal}"
   fi
-  LEFT_PROMPT+="${separator}$(set_color - ${params[1]}) ${params[0]} ${normal}"
+  LEFT_PROMPT+="${separator}$(set_color ${params[2]:--} ${params[1]}) ${params[0]} ${normal}"
   LAST_SEGMENT_COLOR=${params[1]}
   (( SEGMENTS_AT_LEFT += 1 ))
 }
