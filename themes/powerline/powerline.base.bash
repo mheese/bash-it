@@ -22,16 +22,20 @@ function __powerline_user_info_prompt {
   set +u
   local user_info=""
   local color=${USER_INFO_THEME_PROMPT_COLOR}
+  local text_color="${USER_INFO_THEME_PROMPT_COLOR_TEXT:-255}"
+  local attr="-"
 
   if [[ "${THEME_CHECK_SUDO}" = true ]]; then
     if sudo -n uptime 2>&1 | grep -q "load"; then
       color=${USER_INFO_THEME_PROMPT_COLOR_SUDO}
+      text_color="${USER_INFO_THEME_PROMPT_COLOR_TEXT_SUDO:-255}"
     fi
   fi
   case "${POWERLINE_PROMPT_USER_INFO_MODE}" in
     "sudo")
       if [[ "${color}" == "${USER_INFO_THEME_PROMPT_COLOR_SUDO}" ]]; then
         user_info="!!!"
+        attr="${USER_INFO_THEME_PROMPT_ATTR_SUDO:-1}"
       fi
       ;;
     *)
@@ -42,7 +46,7 @@ function __powerline_user_info_prompt {
       fi
       ;;
   esac
-  [[ -n "${user_info}" ]] && echo "${user_info}|${color}|255"
+  [[ -n "${user_info}" ]] && echo "${user_info}|${color}|${text_color}|${attr}"
 }
 
 function __powerline_ruby_prompt {
@@ -132,12 +136,12 @@ function __powerline_kubernetes_prompt {
   local context="$(kubectl config current-context)"
   local color=""
   local text_color=""
-  local attr="-"
+  local attr="${KUBERNETES_PROMPT_ATTR:--}"
   if [ -z "${context##*${KUBERNETES_PROMPT_PROD:-prod}*}" ] ; then
     color="${KUBERNETES_PROMPT_PROD_COLOR:-9}"
     text_color="${KUBERNETES_PROMPT_PROD_COLOR_TEXT:-255}"
     context="${context^^}"
-    attr="1"
+    attr="${KUBERNETES_PROMPT_PROD_ATTR:-1}"
   else
     color="${KUBERNETES_PROMPT_COLOR:-247}"
     text_color="${KUBERNETES_PROMPT_COLOR_TEXT:-7}"
