@@ -10,7 +10,12 @@ function set_color {
     bg="48;5;${2}"
     [[ -n "${fg}" ]] && bg=";${bg}"
   fi
-  echo -e "\[\033[${fg}${bg}m\]"
+  if [[ "${3}" != "-" ]]; then
+    attr="${3};"
+  else
+    attr="0;"
+  fi
+  echo -e "\[\033[${attr}${fg}${bg}m\]"
 }
 
 function __powerline_user_info_prompt {
@@ -123,6 +128,23 @@ function __powerline_in_vim_prompt {
   fi
 }
 
+function __powerline_kubernetes_prompt {
+  local context="$(kubectl config current-context)"
+  local color=""
+  local text_color=""
+  local attr="-"
+  if [ -z "${context##*${KUBERNETES_PROMPT_PROD:-prod}*}" ] ; then
+    color="${KUBERNETES_PROMPT_PROD_COLOR:-9}"
+    text_color="${KUBERNETES_PROMPT_PROD_COLOR_TEXT:-255}"
+    context="${context^^}"
+    attr="1"
+  else
+    color="${KUBERNETES_PROMPT_COLOR:-247}"
+    text_color="${KUBERNETES_PROMPT_COLOR_TEXT:-7}"
+  fi
+  echo "${context}|${color}|${text_color}|${attr}"
+}
+
 function __powerline_left_segment {
   local OLD_IFS="${IFS}"; IFS="|"
   local params=( $1 )
@@ -133,7 +155,7 @@ function __powerline_left_segment {
   if [[ "${SEGMENTS_AT_LEFT}" -gt 0 ]]; then
     separator="$(set_color ${LAST_SEGMENT_COLOR} ${params[1]})${separator_char}${normal}"
   fi
-  LEFT_PROMPT+="${separator}$(set_color ${params[2]:--} ${params[1]}) ${params[0]} ${normal}"
+  LEFT_PROMPT+="${separator}$(set_color ${params[2]:--} ${params[1]} ${params[3]:--}) ${params[0]} ${normal}"
   LAST_SEGMENT_COLOR=${params[1]}
   (( SEGMENTS_AT_LEFT += 1 ))
 }
