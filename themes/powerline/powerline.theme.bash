@@ -52,5 +52,5 @@ IN_VIM_THEME_PROMPT_TEXT="vim"
 
 POWERLINE_PROMPT=${POWERLINE_PROMPT:="user_info scm python_venv ruby cwd"}
 
-#safe_append_prompt_command __powerline_prompt_command
-PROMPT_COMMAND=__powerline_prompt_command
+safe_append_prompt_command __powerline_prompt_command
+#PROMPT_COMMAND=__powerline_prompt_command

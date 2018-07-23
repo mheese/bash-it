@@ -94,13 +94,14 @@ function __powerline_scm_prompt {
     if [[ "${SCM_GIT_CHAR}" == "${SCM_CHAR}" ]]; then
       scm_prompt+="${SCM_CHAR}${SCM_BRANCH}${SCM_STATE}"
     fi
-    echo "${scm_prompt}${scm}|${color}|256"
+    echo "${scm_prompt}${scm}|${color}|0"
+    #echo "${scm_prompt}${scm}|${color}"
   fi
 }
 
 function __powerline_cwd_prompt {
-  #echo "$(pwd | sed "s|^${HOME}|~|")|${CWD_THEME_PROMPT_COLOR}|256"
-  echo "$(basename $(pwd))|${CWD_THEME_PROMPT_COLOR}|256"
+  #echo "$(pwd | sed "s|^${HOME}|~|")|${CWD_THEME_PROMPT_COLOR}|0"
+  echo "$(basename $(pwd))|${CWD_THEME_PROMPT_COLOR}|0"
 }
 
 function __powerline_clock_prompt {
@@ -122,7 +123,8 @@ function __powerline_battery_prompt {
       color="${BATTERY_STATUS_THEME_PROMPT_GOOD_COLOR}"
     fi
     ac_adapter_connected && battery_status="${BATTERY_AC_CHAR} ${battery_status}"
-    echo "${battery_status}%|${color}|253"
+    #echo "${battery_status}%|${color}|253"
+    echo "${battery_status}%|${color}|255"
   fi
 }
 
@@ -133,7 +135,7 @@ function __powerline_in_vim_prompt {
 }
 
 function __powerline_kubernetes_prompt {
-  local context="$(kubectl config current-context)"
+  local context="$(kubectl config current-context 2>/dev/null)"
   local color=""
   local text_color=""
   local attr="${KUBERNETES_PROMPT_ATTR:--}"
