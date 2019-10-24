@@ -94,13 +94,15 @@ function __powerline_scm_prompt {
     if [[ "${SCM_GIT_CHAR}" == "${SCM_CHAR}" ]]; then
       scm_prompt+="${SCM_CHAR}${SCM_BRANCH}${SCM_STATE}"
     fi
-    echo "${scm_prompt}${scm}|${color}|256"
+    #echo "${scm_prompt}${scm}|${color}|256"
+    echo "${scm_prompt}${scm}|${color}|0"
   fi
 }
 
 function __powerline_cwd_prompt {
   #echo "$(pwd | sed "s|^${HOME}|~|")|${CWD_THEME_PROMPT_COLOR}|256"
-  echo "$(basename $(pwd))|${CWD_THEME_PROMPT_COLOR}|256"
+  #echo "$(basename $(pwd))|${CWD_THEME_PROMPT_COLOR}|256"
+  echo "$(basename $(pwd))|${CWD_THEME_PROMPT_COLOR}|0"
 }
 
 function __powerline_clock_prompt {
